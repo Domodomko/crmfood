@@ -2,11 +2,11 @@ from django.urls import path
 from food import views
 
 urlpatterns = [
-    path('tables', views.TableListView),
-    path('roles', views.RoleListView),
-    path('departments', views.DepartmentListView),
-    path('categories', views.MealCategoryListView),
-    path('statuses', views.StatusListView),
-    path('percentage', views.ServicePercentageListView),
-    path('meals', views.MealListView),
+    path('tables', views.TableListView.as_view()),
+    path('roles', views.RoleListView.as_view()),
+    path('departments', views.DepartmentListView.as_view()),
+    path('categories', views.MealCategoryListView.as_view()),
+    path('statuses', views.StatusListView.as_view()),
+    path('percentage', views.ServicePercentageListView.as_view()),
+    path('meals', views.MealListView.as_view()),
 ]
