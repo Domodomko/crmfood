@@ -26,7 +26,7 @@ class MealCategoryListView(generics.ListAPIView):
     serializer_class = MealCategorySerializer
     queryset = MealCategory.objects.all()
     filter_backends = [filters.SearchFilter]
-    search_fields = ['departmentid__name',]
+    search_fields = ['departmentid__name', ]
 
 
 class StatusListView(generics.ListAPIView):
@@ -42,3 +42,19 @@ class ServicePercentageListView(generics.ListAPIView):
 class MealListView(generics.ListAPIView):
     serializer_class = MealSerializer
     queryset = Meal.objects.all()
+
+
+class OrderListView(generics.ListAPIView):
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+
+
+class CheckListView(generics.ListAPIView):
+    serializer_class = CheckSerializer
+    queryset = Check.objects.all()
+
+
+class MealsToCheckListView(generics.ListAPIView):
+    serializer_class = MealsToCheckSerializer
+    queryset = MealsToOrder.objects.all()
+
