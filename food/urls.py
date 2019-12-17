@@ -1,5 +1,6 @@
 from django.urls import path
 from food import views
+from .views import *
 
 urlpatterns = [
     path('tables', views.TableListView.as_view()),
@@ -12,4 +13,10 @@ urlpatterns = [
     path('orders', views.OrderListView.as_view()),
     path('checks', views.CheckListView.as_view()),
     path('mealstochecks', views.MealsToCheckListView.as_view()),
+    path('activeorders', views.ActiveOrdersListView.as_view()),
+
+
+    path('users', RegistrationAPIView.as_view()),
+    path('users/login/', LoginAPIView.as_view()),
+    path('user', UserRetrieveUpdateAPIView.as_view()),
 ]
