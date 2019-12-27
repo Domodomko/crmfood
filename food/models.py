@@ -117,7 +117,7 @@ class Order(models.Model):
     waiterid = models.IntegerField(default=0)
     tableid = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='table', null=True)
     isitopen = models.BooleanField(default=0)
-    date = models.CharField(max_length=200, default='')
+    date = models.DateTimeField(auto_now_add=True)
 
     def get_total_sum(self):
         return sum(item.get_sum() for item in self.orderid.all())
@@ -131,19 +131,20 @@ class Meal(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='mealsid')
 
 
+class Check(models.Model):
+    order = models.OneToOneField(Order, on_delete = models.CASCADE, primary_key = True, related_name='order')
+    servicefee = models.ForeignKey(ServicePercentage, on_delete=None, related_name='servicefee')
+    date = models.DateTimeField(auto_now_add=True)
+
+    def get_total(self):
+        return self.order.get_total_sum() * (1+(self.servicefee.percentage/100))
+
+
 class MealsToOrder(models.Model):
     orderid = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, related_name='orderid')
     mealsid = models.ForeignKey(Meal, on_delete=models.CASCADE, null=True)
     count = models.IntegerField(default=1)
+    checkid = models.ForeignKey(Check, on_delete=models.CASCADE, null=True, related_name='checkid')
 
     def get_sum(self):
         return self.mealsid.price * self.count
-
-
-class Check(models.Model):
-    orderid = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order')
-    servicefee = models.ForeignKey(ServicePercentage, on_delete=None, related_name='servicefee')
-    date = models.CharField(max_length=100, default='')
-
-    def get_total(self):
-        return self.orderid.get_total_sum() * (1+(self.servicefee.percentage/100))

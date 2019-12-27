@@ -12,10 +12,8 @@ urlpatterns = [
     path('meals', views.MealListView.as_view()),
     path('orders', views.OrderListView.as_view()),
     path('checks', views.CheckListView.as_view()),
-    path('mealstochecks', views.MealsToCheckListView.as_view()),
-    path('activeorders', views.ActiveOrdersListView.as_view()),
-
-
+    path('mealstoorder', views.MealsToOrderListView.as_view()),
+    path('activeorders', views.ActiveOrderListView.as_view()),
     path('users', RegistrationAPIView.as_view()),
     path('users/login/', LoginAPIView.as_view()),
     path('user', UserRetrieveUpdateAPIView.as_view()),

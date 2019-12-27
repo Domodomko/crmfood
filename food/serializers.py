@@ -146,15 +146,6 @@ class MealSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MealsToOrderSerializer(serializers.ModelSerializer):
-    mealsid = serializers.PrimaryKeyRelatedField(queryset=Meal.objects.all(), source='mealsid.id')
-    name = serializers.CharField(source='mealsid.name', read_only=True)
-
-    class Meta:
-        model = MealsToOrder
-        fields = ('mealsid', 'name', 'count')
-
-
-class MealsToCheckSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='mealsid.name', read_only=True)
     price = serializers.CharField(source='mealsid.price', read_only=True)
     total = serializers.FloatField(source='get_sum', read_only=True)
@@ -175,11 +166,11 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class CheckSerializer(serializers.ModelSerializer):
-    orderid = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all(), source='orderid.id')
+    orderid = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all(), source='order.id')
     servicefee = serializers.FloatField(source='servicefee.percentage', read_only=True)
-    meals = MealsToCheckSerializer(many=True, required=False)
+    meals = MealsToOrderSerializer(many=True, required=False, source='checkid')
     totalsum = serializers.FloatField(source='get_total', read_only=True)
 
     class Meta:
         model = Check
-        fields = ['id', 'orderid', 'date', 'servicefee', 'totalsum', 'meals']
+        fields = ['orderid', 'date', 'servicefee', 'totalsum', 'meals']

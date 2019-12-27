@@ -276,7 +276,26 @@ class CheckListView(generics.ListAPIView):
 
         return Response(status=status.HTTP_201_CREATED)
 
-class MealsToCheckListView(generics.ListAPIView):
-    serializer_class = MealsToCheckSerializer
+
+class MealsToOrderListView(generics.ListAPIView):
+    serializer_class = MealsToOrderSerializer
     queryset = MealsToOrder.objects.all()
+
+    def get(self, request):
+        mealstoorder = MealsToOrder.objects.all()
+        serializer = MealsToOrderSerializer(mealstoorder, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = MealsToOrderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def delete(self, request):
+        data = json.loads((request.body).decode("utf-8"))
+        MealsToOrder.objects.filter(id=data['id']).delete()
+
+        return Response(status=status.HTTP_201_CREATED)
 
